@@ -100,18 +100,16 @@ const buscarAluno = async function(id) {
   
 }
 
-//função para listar todos os registros do BD
+//função para autentificar usuário
 const autenticarAluno = async function(login, senha) {
      
     //import do arquivo de funções
     const aluno = require('../model/DAO/alunoUsuario.js');
-    const jwt = require('../midleware/controllerJWT.js');
+    const jwt = require('../midleware/controllerJWT.js')
 
     const dadosAluno = await aluno.selecAuthByPassword(login, senha);
 
     if (dadosAluno){
-        let token = await jwt.createJWT(dadosAluno.id_aluno);
-        dadosAluno.token = token;
         return dadosAluno;
     }else
         return false;

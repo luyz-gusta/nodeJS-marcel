@@ -1,34 +1,42 @@
-const jwt = require('jsonwebtoken');
-const SECRET = '123abc';
-const EXPIRES = 60;
+/************************************************************************************************
+ * Objetivo: Aprendendo JWT
+ * Autor: Luiz Gustavo
+ * Data: 30/08/2023
+ * Versão: 1.0
+************************************************************************************************/
 
-//Criação da chava JWT
-const createJWT = async function(payLoad)
-{
-    //Gera o token JWT, que é composto por 3 partes:
-            //payload é passado uma dado de chave para identificar quem é a pessoas que esta se autenticando
-            //Chave de autenticação que é a senha
-            //tempo de expiração do token
-    const token = jwt.sign({userID: payLoad}, SECRET, {expiresIn: EXPIRES});
-    
-    return token;
+//Import da biblioteca pro jwt
+const jwt = require('jsonwebtoken')
+
+//Chave secreta para a criação do JWT
+const SECRET = 'b1c2d5'
+
+//Tempo para validar o token do JWT (segundos)
+const EXPIRES = 120
+
+//Criação do JWT (retorna um TOKEN)
+const createJWT = async (payload) => {
+
+    //Gera o Token
+        //payload - a identificação do usuário autenticado
+        //SECRET - a chave secreta
+        //expiresIn - tempo de expiração do token
+    const token = jwt.sign({userID: payload}, SECRET, {expiresIn: EXPIRES})    
+
+    return token
 }
 
-//Verificação do JWT
-const validateJWT = async function(token)
-{
-    let statusVerify = false;
-    //Verifica se o token recebido na aplicação é válido
-    jwt.verify(token, SECRET, async function (err, decoded) {
-        //console.log(err)
-        if (err)
-            statusVerify = false;
-        else
-            // return decoded.userID;
-            statusVerify = true;
-    });
+//Validação de autenticidade do JWT (recebe o token para validação)
+const validateJWT = async (token) => {
+    let status = false
 
-    return statusVerify;
+    //Valida a autenticidade do token
+    jwt.verify(token, SECRET, async (err, decode) => {
+        if(!err)
+            status = true
+
+        return status
+    })
 }
 
 module.exports = {
